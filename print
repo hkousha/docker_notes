@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+echo "ROOT_DIR="$ROOT_DIR
+echo "EXIST="$EXIST
+
+
+echo "Lets now do a while to be more interesting and take some of that cpu idle time."
+d=0
+while [ $d != 10000 ]; 
+    do d=$(($d+1)); 
+done;

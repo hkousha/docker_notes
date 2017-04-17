@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+#TODO convert this to a Makefile
+
+# Building docker image from Dockerfile
+sudo docker build -t=test $((pwd))
+
+# Running test container
+sudo docker run test
+
+# Inspecting test container 
+sudo docker inspect test
+
+# Listing all images
+sudo docker images
+
+# Removing all containers
+# sudo docker images |awk '{if (NR!=1) {print $3}}' |xargs sudo docker image rm -f

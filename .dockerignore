@@ -1,0 +1,2 @@
+**/*.md # ignore all .pyc files in any syb dir.
+!README.md # exclude main.pyc
