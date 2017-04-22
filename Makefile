@@ -24,7 +24,7 @@ build:
 .PHONY: run
 run:
 	@echo "running the image"
-	sudo docker run $(IMAGE_NAME)
+	sudo docker run -p 8000:8000 $(IMAGE_NAME)
 
 ## Inspecting the container 
 .PHONY: inspect
