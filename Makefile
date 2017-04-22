@@ -20,11 +20,11 @@ build:
 	@echo "running build";
 	sudo docker build -t=$(IMAGE_NAME) $(APPLICATION_DIR)
 
-# Running the container
+# Running the container and set the name to the image_name
 .PHONY: run
 run:
 	@echo "running the image"
-	sudo docker run -p 8000:8000 $(IMAGE_NAME)
+	sudo docker run -p 8000:8000 --name $(IMAGE_NAME) $(IMAGE_NAME)
 
 ## Inspecting the container 
 .PHONY: inspect
@@ -32,16 +32,35 @@ inspect:
 	sudo docker inspect $(IMAGE_NAME)
 
 ## Listing all images
-.PHONY: list
-list:
+.PHONY: images
+images:
 	sudo docker images
 
-# Remove test container
-.PHONY: clean
-clean:
+# List containers
+.PHONY: containers
+containers:
+	sudo docker container ls
+
+# Remove all running containers
+.PHONY: containers_rm
+containers_rm:
+	sudo docker container rm -f $(IMAGE_NAME)
+
+# Remove image
+.PHONY: image_rm
+image_rm:
 	sudo docker image rm -f $(IMAGE_NAME)
 
-# Removing all containers
+# Remove test image
+.PHONY: clean
+clean: containers_rm image_rm
+
+# Removing all images
 .PHONY: remove_all
 remove_all:
-	sudo docker images |awk '{if (NR!=1) {print $3}}' |xargs sudo docker image rm -f
+	sudo docker container ls |awk '{if (NR!=1) {print $$1}}' |xargs sudo docker container rm -f
+	sudo docker images |awk '{if (NR!=1) {print $$3}}' |xargs sudo docker image rm -f
+
+.PHONY: ps
+ps:
+	sudo docker exec -it $(IMAGE_NAME) ps aux

@@ -13,7 +13,8 @@ LABEL version="1.0.0"\
 
 # Copy print.bash to /tmp/
 COPY *.py /tmp/
-#Add does the same:
+# Add does the same
+#a Add also untar files and can download from urls
 ADD dummy_flask.py /home/
 
 # install pip and flask 
@@ -30,5 +31,8 @@ ENV EXIST ${NOT_EXIST:-"exist now"}
 EXPOSE 8000
 
 # There can only be one CMD instruction. If more than one CMD then last one
+# Better way for this is to use ENTRYPOINT and CMD for defaults
 # Run a dummy flask
-CMD /tmp/dummy_flask.py
+ENTRYPOINT ["/tmp/dummy_flask.py"]
+CMD ["--p=8000"]
+
