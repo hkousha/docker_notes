@@ -18,7 +18,7 @@ APPLICATION_DIR = $(shell pwd)
 .PHONY: build
 build:
 	@echo "running build";
-	sudo docker build -t=$(IMAGE_NAME) $(APPLICATION_DIR)
+	sudo docker build -t=$(IMAGE_NAME) --build-arg user=test_user $(APPLICATION_DIR)
 
 # Running the container and set the name to the image_name
 .PHONY: run
@@ -53,7 +53,7 @@ image_rm:
 
 # Remove test image
 .PHONY: clean
-clean: containers_rm image_rm
+clean: container_rm image_rm
 
 # Removing all images
 .PHONY: remove_all

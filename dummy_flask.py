@@ -16,4 +16,4 @@ def test():
 if __name__=='__main__':
   # Later we can use port to set the port.
   print sys.argv
-  app.run(port=8000)
+  app.run(port=sys.argv[1])
