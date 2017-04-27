@@ -24,7 +24,7 @@ build:
 .PHONY: run
 run:
 	@echo "running the image"
-	sudo docker run -p 8000:8000 --name $(IMAGE_NAME) $(IMAGE_NAME)
+	./run.sh $(IMAGE_NAME)
 
 ## Inspecting the container 
 .PHONY: inspect
@@ -41,9 +41,9 @@ images:
 containers:
 	sudo docker container ls
 
-# Remove all running containers
-.PHONY: containers_rm
-containers_rm:
+# Remove running containers
+.PHONY: container_rm
+container_rm:
 	sudo docker container rm -f $(IMAGE_NAME)
 
 # Remove image
