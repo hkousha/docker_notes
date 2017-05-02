@@ -27,9 +27,18 @@ RUN df -h
 # install pip and flask 
 RUN apt-get -y update && apt-get install -y python-pip
 RUN ["pip", "install", "flask"]
+# We can also use SHELL.
+# The last SHELL command will override all earlier ones (i.e. this will break).
+#SHELL ["pip", "install", "flask"]
 
 # when running docker we can pass argument --build-arg user=<username> in built time
 ARG user
+
+# Run this on a later stage (on build)
+ONBUILD RUN touch /tmp/test
+
+# /tmp/test will not be created until later.
+RUN ["ls", "/tmp/"]
 
 # Set DUMMY_DIR to /root
 ENV DUMMY_DIR /scripts
@@ -58,3 +67,11 @@ RUN pwd
 # Run a dummy flask
 ENTRYPOINT ["./dummy_flask.py"]
 CMD ["8000"]
+
+# Setting healcheck for container
+# The output of the check can be seen when inspecting the container under health
+# To disable all HEALTHCHECKs add HEALTHCHECK NONE 
+HEALTHCHECK --interval=5s --timeout=1s --retries=2 CMD curl http://127.0.0.1:8000/
+
+# Setting stop signale
+STOPSIGNAL SIGKILL
