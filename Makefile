@@ -1,5 +1,4 @@
-# Set project name
-PROJECT_NAME="docker_runner"
+# Set project name PROJECT_NAME="docker_runner"
 
 # Set default to build and run:
 .DEFAULT_GOAL := build_run
@@ -44,12 +43,12 @@ containers:
 # Remove running containers
 .PHONY: container_rm
 container_rm:
-	sudo docker container rm -f $(IMAGE_NAME)
+	sudo docker container rm -f $(IMAGE_NAME) |true
 
 # Remove image
 .PHONY: image_rm
 image_rm:
-	sudo docker image rm -f $(IMAGE_NAME)
+	sudo docker image rm -f $(IMAGE_NAME) |true
 
 # Remove test image
 .PHONY: clean
@@ -58,9 +57,26 @@ clean: container_rm image_rm
 # Removing all images
 .PHONY: remove_all
 remove_all:
-	sudo docker container ls |awk '{if (NR!=1) {print $$1}}' |xargs sudo docker container rm -f
+	sudo docker container ls |awk '{if (NR!=1) {print $$1}}' |xargs sudo docker container rm -f 
 	sudo docker images |awk '{if (NR!=1) {print $$3}}' |xargs sudo docker image rm -f
 
 .PHONY: ps
 ps:
 	sudo docker exec -it $(IMAGE_NAME) ps aux
+
+.PHONY: network_ls
+network_ls:
+	sudo docker network ls
+
+.PHONY: network_inspect
+network_inspect:
+	sudo docker network inspect isolated
+
+.PHONY: attach
+attach:
+	sudo docker attach $(IMAGE_NAME)
+
+# This might not work if something changes (ip, port,...).
+.PHONY: test
+test:
+	google-chrome 172.18.0.2:8000

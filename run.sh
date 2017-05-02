@@ -12,4 +12,6 @@ fi
 # Add a trap to remove the container before exiting.
 # This allow us to run the test again without needing to manually remove the container.
 trap "{ make container_rm; exit 0; }" SIGINT SIGTERM                                 
-sudo docker run -p 8000:8000 --name $IMAGE_NAME $IMAGE_NAME
+# Creating an isolated bridge network for the container.
+sudo docker network create --driver bridge isolated
+sudo docker run --network=isolated -p 8000:8000 --name $IMAGE_NAME $IMAGE_NAME
