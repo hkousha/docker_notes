@@ -14,6 +14,5 @@ def test():
                   status=200)
 
 if __name__=='__main__':
-  # Later we can use port to set the port.
-  print sys.argv
-  app.run(port=sys.argv[1])
+  # Making flask listen to all interfaces.
+  app.run(host='0.0.0.0', port=sys.argv[1])
